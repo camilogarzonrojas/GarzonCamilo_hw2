@@ -3,41 +3,58 @@ import matplotlib.pyplot as plt
 from scipy.fftpack import ifft
 from scipy.interpolate import interp1d
 
-x1,y1=np.genfromtxt('signal.dat', unpack=True, delimiter=',')
-x2,y2=np.genfromtxt('signalSuma.dat', unpack=True, delimiter=',')
+#Se cargan y almacenan los datos de los archivos
+x1,y1=np.genfromtxt('signal.dat', unpack=True) #Archivo con ondas separadas
+x2,y2=np.genfromtxt('signalSuma.dat', unpack=True) #Archivo con la suma de las ondas
 
-def fourier(U):     #Se define la transformada discreta de Fourier
-    N=len(U)
+#Se hacen subplots de los datos originales
+plt.figure()
+fig,ax=plt.subplots(2,1,figsize=(10,10))
+ax[0].plot(x1,y1,c='purple')
+ax[1].plot(x2,y2,c='black')
+
+ax[0].set_xlabel('x')
+ax[0].set_ylabel('y')
+ax[1].set_xlabel('x')
+ax[1].set_ylabel('y')
+
+ax[0].set_title('Signal')
+ax[1].set_title('Signal Suma')
+plt.savefig('GarzonCamilo_signal.pdf')
+plt.close()
+
+
+#Se define la implementacion propia de la transformada discreta de Fourier
+pi=np.pi
+def Fourier(y):
+    N=len(y)
     fase=[]
-    modulo=[]
-    real=[]
-    imag=[]
-    
-    for ki in range(N):
-        UTk=0j+0 #Se inicializa en 0
-        for ni in range(N):
-            UTk=UTk+U[ni]*np.exp(1j*2*np.pi*ki*ni/N)
-        
-        #Se extrae la fase y el modulo de cada numero
-        fase.append(np.arctan(UTk.imag/UTk.real))
-        modulo.append(np.abs(UTk))
-        real.append(UTk.real)
-        imag.append(UTk.imag)
-    
-    return np.array(modulo), np.array(fase), np.array(real), np.array(imag)
-
-def ff_frecuencias(Fnyq, n):
-    f0=Fnyq/n #Esta es la frecuencia base
-    return np.concatenate((np.linspace(f0,Fnyq,n), np.linspace(-Fnyq,-f0,n)))
-    
-#Se calculan las variables de Fourier    
-modulo, fase, real, imag=fourier(y1)
-frecuencias=ff_frecuencias(1.0/(x1[1]-x1[0])*(1.0/2.0), int(len(x1)/2))
+    for k in range(N):
+        s=0+0j
+        for n in range(N):
+            s+=y[n]*np.exp(-(2j*pi*k*n)/N)
+        fase.append(s)
+    return np.array(fase)
 
 
-###Grafica de la segunda parte###
-fig, ax=plt.subplots()
-ax.plot(x1, y1, c='black')
-ax.set_xlabel(['x'])
-ax.set_ylabel(['y'])
-fig.savefig('GarzonCamilo_signal.pdf')
+#Grafica para signal.dat
+dx=x1[1]-x1[0]
+fase=Fourier(y1)
+freq=np.fft.fftfreq(len(y1),dx)
+FR=np.sqrt(np.real(fase)**2+np.imag(fase)**2)
+
+plt.figure()
+plt.plot(freq,FR,c='red')
+plt.xlim(-2000,2000)
+plt.title('Transformada de Fourier de Signal')
+
+#Grafica para signalSuma.dat
+dx2=x2[1]-x2[0]
+fase=Fourier(y2)
+freq2=np.fft.fftfreq(len(y2),dx2)
+FR2=np.sqrt(np.real(fase)**2+np.imag(fase)**2)
+
+plt.figure()
+plt.xlim(-1000,1000)
+plt.plot(freq2,FR2,c='yellow')
+plt.title('Transformada de Fourier de Signal Suma')
