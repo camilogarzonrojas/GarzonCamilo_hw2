@@ -43,18 +43,33 @@ fase=Fourier(y1)
 freq=np.fft.fftfreq(len(y1),dx)
 FR=np.sqrt(np.real(fase)**2+np.imag(fase)**2)
 
-plt.figure()
-plt.plot(freq,FR,c='red')
-plt.xlim(-2000,2000)
-plt.title('Transformada de Fourier de Signal')
-
 #Grafica para signalSuma.dat
 dx2=x2[1]-x2[0]
-fase=Fourier(y2)
+fase2=Fourier(y2)
 freq2=np.fft.fftfreq(len(y2),dx2)
-FR2=np.sqrt(np.real(fase)**2+np.imag(fase)**2)
+FR2=np.sqrt(np.real(fase2)**2+np.imag(fase2)**2)
 
 plt.figure()
-plt.xlim(-1000,1000)
-plt.plot(freq2,FR2,c='yellow')
-plt.title('Transformada de Fourier de Signal Suma')
+plt.plot(freq,FR,c='red',label='Signal')
+plt.plot(freq2,FR2,c='yellow',label='Signal Suma')
+plt.legend(loc=0)
+plt.xlim(-800,800)
+plt.xlabel('Frecuencia')
+plt.ylabel('Amplitud')
+plt.title('Transformada de Fourier de Signal y Signal Suma')
+plt.savefig('GarzonCamilo_TransformadasFourier.pdf')
+plt.close()
+
+
+#Espectrogramas
+plt.figure()
+plt.specgram(y1,Fs=2,NFFT=256,noverlap=128)
+plt.xlabel('Tiempo')
+plt.ylabel('Frecuencia')
+plt.title('Espectrograma de Signal')
+
+plt.figure()
+plt.specgram(y2,Fs=2,NFFT=256)
+plt.xlabel('Tiempo')
+plt.ylabel('Frecuencia')
+plt.title('Espectrograma de Signal Suma')
