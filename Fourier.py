@@ -1,7 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.fftpack import ifft
-from scipy.interpolate import interp1d
+from scipy.fftpack import ifft, fft, fftfreq
 
 #Se cargan y almacenan los datos de los archivos
 x1,y1=np.genfromtxt('signal.dat', unpack=True) #Archivo con ondas separadas
@@ -73,3 +72,15 @@ plt.specgram(y2,Fs=2,NFFT=256)
 plt.xlabel('Tiempo')
 plt.ylabel('Frecuencia')
 plt.title('Espectrograma de Signal Suma')
+
+
+#Se almacenan los datos de temblor.txt
+datos_temblor=np.genfromtxt('temblor.txt',skip_header=4)
+t=np.linspace(-5000,5000,90001)
+
+#Se grafican los datos del temblor
+plt.figure()
+plt.plot(t,datos_temblor,c='c')
+plt.title('Datos del temblor')
+plt.xlabel('Tiempo')
+plt.ylabel('Amplitud')
