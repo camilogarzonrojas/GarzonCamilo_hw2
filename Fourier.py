@@ -19,7 +19,7 @@ ax[1].set_ylabel('y')
 
 ax[0].set_title('Signal')
 ax[1].set_title('Signal Suma')
-plt.savefig('GarzonCamilo_signal.pdf')
+plt.savefig('GarzonCamilo_signal_signalSuma.pdf')
 plt.close()
 
 
@@ -56,7 +56,7 @@ plt.xlim(-800,800)
 plt.xlabel('Frecuencia')
 plt.ylabel('Amplitud')
 plt.title('Transformada de Fourier de Signal y Signal Suma')
-plt.savefig('GarzonCamilo_TransformadasFourier.pdf')
+plt.savefig('GarzonCamilo_TransformadasFourier_signal_signalSuma.pdf')
 plt.close()
 
 
@@ -66,13 +66,13 @@ plt.specgram(y1,Fs=2,NFFT=256,noverlap=128)
 plt.xlabel('Tiempo')
 plt.ylabel('Frecuencia')
 plt.title('Espectrograma de Signal')
-
+plt.savefig('GarzonCamilo_espectograma_signal.pdf')
 plt.figure()
 plt.specgram(y2,Fs=2,NFFT=256)
 plt.xlabel('Tiempo')
 plt.ylabel('Frecuencia')
 plt.title('Espectrograma de Signal Suma')
-
+plt.savefig('GarzonCamilo_espectograma_signalSuma.pdf')
 
 #Se almacenan los datos de temblor.txt
 datos_temblor=np.genfromtxt('temblor.txt',skip_header=4)
@@ -84,3 +84,20 @@ plt.plot(t,datos_temblor,c='c')
 plt.title('Datos del temblor')
 plt.xlabel('Tiempo')
 plt.ylabel('Amplitud')
+plt.savefig('GarzonCamilo_temblor.pdf')
+
+#Se grafican los datos de la transformada de fourier del temblor
+plt.figure()
+plt.plot(t,np.abs(fft(datos_temblor)),c='c')
+plt.title('Transformada de Fourier del temblor')
+plt.xlabel('frecuencia')
+plt.ylabel('Amplitud')
+plt.savefig('GarzonCamilo_TransformadasFourier_temblor.pdf')
+
+#Se grafican los datos del espectograma del temblor
+plt.figure()
+plt.specgram(datos_temblor,Fs=2,NFFT=256)
+plt.title('Espectrograma del temblor')
+plt.xlabel('Tiempo')
+plt.ylabel('frecuencia')
+plt.savefig('GarzonCamilo_espectograma_temblor.pdf')
