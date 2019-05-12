@@ -3,9 +3,12 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-double m=1000.0,k=2000.0,y=0.0,w=sqrt(k/m);
+double m=1000.0;
+double k=2000.0;
+double y=0.0;
+double w=sqrt(k/m);
 const int steps=10000;
-double dt=10.0/steps;
+double dt=100.0/steps;
 double dw=sqrt(k/m)*(3-0.2)/100;
 double a1[steps];
 double a2[steps];
@@ -29,7 +32,6 @@ double F(double t)
 {
     return sin(w*t);
 }
-
 double A1(int step)
 {
     if(a1[step]!=-1)
@@ -37,7 +39,6 @@ double A1(int step)
     a1[step]=(-2*k*U1(step)+k*U2(step)+F(step*dt))/m;
     return a1[step];
 }
-
 double A2(int step)
 {
     if(a2[step]!=-1)
@@ -45,7 +46,6 @@ double A2(int step)
     a2[step]=(k*U1(step)-2*k*U2(step)+k*U3(step))/m;
     return a2[step];
 }
-
 double A3(int step)
 {
     if(a3[step]!=-1)
@@ -53,7 +53,6 @@ double A3(int step)
     a3[step]=(k*U2(step)-k*U3(step))/m;
     return a3[step];
 }
-
 double U1(int step)
 {
     if(step==0)
@@ -63,7 +62,6 @@ double U1(int step)
     u1[step]=U1(step-1)+V1(step-1)*dt+0.5*A1(step-1)*dt*dt;
     return u1[step];
 }
-
 double U2(int step)
 {
     if(step==0)
@@ -73,7 +71,6 @@ double U2(int step)
     u2[step]=U2(step-1)+V2(step-1)*dt+0.5*A2(step-1)*dt*dt;
     return u2[step];
 }
-
 double U3(int step)
 {
     if(step==0)
@@ -83,7 +80,6 @@ double U3(int step)
     u3[step]=U3(step-1)+V3(step-1)*dt+0.5*A3(step-1)*dt*dt;
     return u3[step];
 }
-
 double V1(int step)
 {
     if(step==0)
@@ -93,7 +89,6 @@ double V1(int step)
     v1[step]=V1(step-1)+0.5*(A1(step)+A1(step-1))*dt;
     return v1[step];
 }
-
 double V2(int step)
 {
     if(step==0)
@@ -103,7 +98,6 @@ double V2(int step)
     v2[step]=V2(step-1)+0.5*(A2(step)+A2(step-1))*dt;
     return v2[step];
 }
-
 double V3(int step)
 {
     if(step==0)
@@ -113,11 +107,10 @@ double V3(int step)
     v3[step]=V3(step-1)+0.5*(A3(step)+A3(step-1))*dt;
     return v3[step];
 }
-
 void inicializarArreglos()
 {
     for(int i=0;i<steps;i++)
-	{
+    {
         u1[i]=-1;
         v1[i]=-1;
         u2[i]=-1;
@@ -127,46 +120,48 @@ void inicializarArreglos()
         a1[i]=-1;
         a2[i]=-1;
         a3[i]=-1;
-	}
+    }
 }
-
 void EscribirDatosParte1()
 {
-    freopen("datosOde.dat","w",stdout);
-    for(int i=0;i<steps;i++)
+    dt=25.0/steps;
+    double Warr[4]={1.9*sqrt(k/m),1.2*sqrt(k/m),0.5*sqrt(k/m),1.55*sqrt(k/m)};
+    string number[4]={"1","2","3","4"};
+    for(int j=0;j<4;j++)
+    {
+        inicializarArreglos();
+        w=Warr[j];
+        string file1="datosOde"+number[j]+".dat";
+        char file[30];
+        strcpy(file, file1.c_str());
+        freopen(file,"w",stdout);
+        for(int i=0;i<steps;i++)
 	{
-        cout<<U1(i)<<" "<<U2(i)<<" "<<U3(i)<<" "<<i*dt<<endl;
-    	}
+            cout<<U1(i)<<" "<<U2(i)<<" "<<U3(i)<<" "<<i*dt<<endl;
+        }
+    }
 }
-
 double amplitudMaxima()
 {
     double maxU=-10000;
-    double minU=10000;
     for(int i=0;i<steps;i++)
-	{
         maxU=max(max(max(U1(i),U2(i)),U3(i)),maxU);
-        minU=min(min(min(U1(i),U2(i)),U3(i)),minU);
-    	}
-    return (maxU-minU);
+    return maxU;
 }
-
 void EscribirDatosParte2()
 {
-    freopen("datosOde2.dat","w",stdout);
-    for(int i=0;i<100;i++ )
-	{
+    dt=100.0/steps;
+    freopen("datosOde5.dat","w",stdout);
+    for(int i=0;i<100;i++ ){
         w=dw*i+0.2*sqrt(k/m);
         inicializarArreglos();
         double amplitud=amplitudMaxima();
         cout<<amplitudMaxima()<<" "<<w<<endl;
-    	}
+    }
 
 }
-
 int main()
 {
-    inicializarArreglos();
     EscribirDatosParte1();
     EscribirDatosParte2();
 	return 0;
