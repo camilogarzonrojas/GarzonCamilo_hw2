@@ -148,21 +148,9 @@ double amplitudMaxima()
         maxU=max(max(max(U1(i),U2(i)),U3(i)),maxU);
     return maxU;
 }
-void EscribirDatosParte2()
-{
-    dt=100.0/steps;
-    freopen("datosOde5.dat","w",stdout);
-    for(int i=0;i<100;i++ ){
-        w=dw*i+0.2*sqrt(k/m);
-        inicializarArreglos();
-        double amplitud=amplitudMaxima();
-        cout<<amplitudMaxima()<<" "<<w<<endl;
-    }
 
-}
 int main()
 {
     EscribirDatosParte1();
-    EscribirDatosParte2();
 	return 0;
 }

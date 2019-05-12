@@ -14,8 +14,4 @@ for i in range(4):
     fig.suptitle("W = "+coeficientesW[i]+"sqrt(k/m)")
     plt.tight_layout(pad=2.4, w_pad=1.5, h_pad=1.0)
     fig.savefig("GarzonCamilo_U"+str(i+1)+"vsT.pdf")
-u,w=np.genfromtxt('datosOde5.dat', unpack=True)
-fig, ax = plt.subplots()
-ax.plot(w,u,color="b")
-ax.set(xlabel='w', ylabel='Amplitud',title="Amplitud maxima vs w")
-fig.savefig("GarzonCamilo_UvsW.pdf")
+
